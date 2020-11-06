@@ -40,7 +40,7 @@ class Main extends React.PureComponent {
         </section>
         {/* Список мест  */}
       </main>
-    )
+    );
   }
 }
 

@@ -9,7 +9,7 @@ const Footer = React.memo(() => {
         &copy; {currentYear === 2020 ? '2020' : '2020 - ' + currentYear} Mesto Russia
       </p>
     </footer>
-  )
+  );
 });
 
 export default Footer;

@@ -1,16 +1,19 @@
-import React from 'react';
-import Header from './Header';
-import Footer from './Footer';
-import Main from './Main';
-import PopupWithForm from './PopupWithForm';
-import ImagePopup from './ImagePopup';
-import EditProfilePopup from './EditProfilePopup';
-import EditAvatarPopup from './EditAvatarPopup';
-import AddPlacePopup from './AddPlacePopup';
-import Login from './Login';
-import api from '../utils/api'; // Подключение к апи
+import React from 'react'; // Реакт
+import { Route, Redirect, Switch, withRouter } from 'react-router-dom'; // Компоненты для роутинга и редиректа
+import ProtectedRoute from './ProtectedRoute'; // HOC компонент для защиты роута
+import Header from './Header'; // Шапка
+import Footer from './Footer'; // Подвал
+import Main from './Main'; // Основной контент
+import Login from './Login'; // Страница авторизации
+import Register from './Register'; // Страница регистрации
+import PopupWithForm from './PopupWithForm'; // Попап с формой
+import ImagePopup from './ImagePopup'; // Попап просмотра картинки
+import EditProfilePopup from './EditProfilePopup'; // Попап редактирования профиля
+import EditAvatarPopup from './EditAvatarPopup'; // Попап редактирования аватара
+import AddPlacePopup from './AddPlacePopup'; // Попап добавления места
+import InfoTooltip from './InfoTooltip'; // Попап добавления места
+import api from '../utils/api'; // Подключение к апи для получения данных
 import { CurrentUserContext } from '../contexts/currentUserContext'; // Контекст текущего юзера
-import {} from 'react-router';
 
 class App extends React.Component {
   constructor(props) {
@@ -20,12 +23,13 @@ class App extends React.Component {
       isEditAvatarPopupOpen: false,
       isEditProfilePopupOpen: false,
       isAddPlacePopupOpen: false,
+      isTooltipPopupOpen: true,
       confirmDeletePopupOpen: false,
       selectedCard: '',
       currentUser: '',
       cards: [],
-      // FIXME: Для разработки
-      userIsAuthorised: false,
+      // FIXME: Переменная для нужд разработки, авторизован ли юзер
+      isUserLogined: false,
     };
   }
 
@@ -51,6 +55,7 @@ class App extends React.Component {
       isEditProfilePopupOpen: false,
       isAddPlacePopupOpen: false,
       confirmDeletePopupOpen: false,
+      isTooltipPopupOpen: false,
       selectedCard: '',
     });
   }
@@ -144,19 +149,41 @@ class App extends React.Component {
   render() {
     return (
       <CurrentUserContext.Provider value={this.state.currentUser}>
-        <Header/>
+        <Header isLogined={this.state.isUserLogined}/>
+
         <Switch>
+          <Route path='/sign-up'>
+            <Register isLogined={this.state.isUserLogined} />
+          </Route>
 
+          <Route path='/sign-in'>
+            <Login isLogined={this.state.isUserLogined} />
+          </Route>
+
+
+          <Route exact path='/'>
+            <ProtectedRoute
+              path='/'
+              component={Main}
+              isLogined={this.state.isUserLogined}
+              onEditProfile={this.handleEditProfileClick}
+              onAddPlace={this.handleAddPlaceClick}
+              onEditAvatar={this.handleEditAvatarClick}
+              onCardClick={this.handleCardClick}
+              cards={this.state.cards}
+              onCardLike={this.handleCardLike}
+              onCardDelete={this.handleCardDelete}
+            />
+            <ProtectedRoute path='/' component={Footer} isLogined={this.state.isUserLogined} />
+            <EditProfilePopup isOpen={this.state.isEditProfilePopupOpen} onClose={this.closeAllPopups} onUpdateUser={this.handleUpdateUser} />
+            <AddPlacePopup isOpen={this.state.isAddPlacePopupOpen} onClose={this.closeAllPopups} onAddPlace={this.handleAddPlaceSubmit} />
+            <PopupWithForm title="Вы уверены?" buttonText="Да" name="confirm" isOpen={this.state.confirmDeletePopupOpen} onSubmit={this.cardDelete} />
+            <EditAvatarPopup onClose={this.closeAllPopups} isOpen={this.state.isEditAvatarPopupOpen} onUpdateAvatar={this.handleUpdateAvatar} />
+            <ImagePopup onClose={this.closeAllPopups} card={this.state.selectedCard}/>
+          </Route>
         </Switch>
-        {!this.state.userIsAuthorised && <Login />}
-        {this.state.userIsAuthorised && <Main onEditProfile={this.handleEditProfileClick} onAddPlace={this.handleAddPlaceClick} onEditAvatar={this.handleEditAvatarClick} onCardClick={this.handleCardClick} cards={this.state.cards} onCardLike={this.handleCardLike} onCardDelete={this.handleCardDelete}/>}
-        <Footer/>
+        <InfoTooltip isLogined={this.state.isUserLogined} isOpen={this.state.isTooltipPopupOpen} onClose={this.closeAllPopups} />
 
-        <EditProfilePopup isOpen={this.state.isEditProfilePopupOpen} onClose={this.closeAllPopups} onUpdateUser={this.handleUpdateUser} />
-        <AddPlacePopup isOpen={this.state.isAddPlacePopupOpen} onClose={this.closeAllPopups} onAddPlace={this.handleAddPlaceSubmit} />
-        <PopupWithForm title="Вы уверены?" buttonText="Да" name="confirm" isOpen={this.state.confirmDeletePopupOpen} onSubmit={this.cardDelete} />
-        <EditAvatarPopup onClose={this.closeAllPopups} isOpen={this.state.isEditAvatarPopupOpen} onUpdateAvatar={this.handleUpdateAvatar} />
-        <ImagePopup onClose={this.closeAllPopups} card={this.state.selectedCard}/>
       </CurrentUserContext.Provider>
     );
   }
