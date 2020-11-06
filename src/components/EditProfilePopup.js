@@ -1,11 +1,11 @@
-import React from "react";
-import PopupWithForm from "./PopupWithForm";
+import React from 'react';
+import PopupWithForm from './PopupWithForm';
 import { CurrentUserContext } from '../contexts/currentUserContext';
 
-function validate () {
-  //true  - error
-  //false - correct
-}
+// function validate () {
+//   //true  - error
+//   //false - correct
+// }
 
 const validators = {
   name: {
@@ -14,7 +14,7 @@ const validators = {
     },
     minLength: (value) => {
       return value && value.length < 3;
-    }
+    },
   },
   about: {
     required: (value) => {
@@ -22,63 +22,62 @@ const validators = {
     },
     minLength: (value) => {
       return value && value.length < 2;
-    }
-  }
-}
+    },
+  },
+};
 
-function EditProfilePopup (props) {
-  const [formValues, changeFormValues] = React.useState({name: '', about: ''});
+function EditProfilePopup(props) {
+  const [formValues, changeFormValues] = React.useState({ name: '', about: '' });
 
-  //Переменная для состояеия ошибок
+  // Переменная для состояеия ошибок
   const [errors, setErroros] = React.useState({
     name: {
       required: true,
-      minLength: true
+      minLength: true,
     },
     about: {
       required: true,
-      minLength: true
-    }
+      minLength: true,
+    },
   });
 
   const currentUser = React.useContext(CurrentUserContext);
 
-  function handleFormChange (event) {
-    const {name, value} = event.target;
-    changeFormValues({...formValues, [name]: value});
+  function handleFormChange(event) {
+    const { name, value } = event.target;
+    changeFormValues({ ...formValues, [name]: value });
   }
 
-  function handleSubmit (event) {
+  function handleSubmit(event) {
     event.preventDefault();
     props.onUpdateUser(formValues);
   }
 
   React.useEffect(() => {
-    changeFormValues({name: currentUser.name, about: currentUser.about})
-  }, [currentUser])
+    changeFormValues({ name: currentUser.name, about: currentUser.about });
+  }, [currentUser]);
 
-  React.useEffect(function validateInputs () {
+  React.useEffect(() => {
     const { name, about } = formValues;
-    const userNameValidationResult = Object.keys(validators.name).map(function (errorKey) {
+    const userNameValidationResult = Object.keys(validators.name).map((errorKey) => {
       const errorResult = validators.name[errorKey](name);
       return {
-        [errorKey]: errorResult
-      }
+        [errorKey]: errorResult,
+      };
     }).reduce((acc, element) => {
-      return {...acc, ...element}
+      return { ...acc, ...element };
     }, {});
 
-    const aboutValidationResult = Object.keys(validators.about).map(function (errorKey) {
+    const aboutValidationResult = Object.keys(validators.about).map((errorKey) => {
       const errorResult = validators.about[errorKey](about);
       return {
-        [errorKey]: errorResult
-      }
+        [errorKey]: errorResult,
+      };
     }).reduce((acc, element) => {
-      return {...acc, ...element}
+      return { ...acc, ...element };
     }, {});
 
-    setErroros({name: userNameValidationResult, about: aboutValidationResult});
-
+    setErroros({ name: userNameValidationResult, about: aboutValidationResult });
   }, [formValues, setErroros]);
 
   const isNameInvalid = Object.values(errors.name).some(Boolean);
@@ -100,7 +99,7 @@ function EditProfilePopup (props) {
         </div>
       </>
     }/>
-  )
+  );
 }
 
 export default EditProfilePopup;

@@ -1,15 +1,15 @@
 import React from 'react';
 import Card from './Card';
-import { CurrentUserContext } from '../contexts/currentUserContext'; //Контекст текущего юзера
+import { CurrentUserContext } from '../contexts/currentUserContext'; // Контекст текущего юзера
 
 class Main extends React.PureComponent {
   static contextType = CurrentUserContext;
 
-  constructor(props) {
-    super(props);
-  }
+  // constructor(props) {
+  //   super(props);
+  // }
 
-  render () {
+  render() {
     return (
       <main className="main">
         {/* Профиль пользователя */}

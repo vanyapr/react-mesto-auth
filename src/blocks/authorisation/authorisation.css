@@ -1,0 +1,10 @@
+@import url(./__title/authorisation__title.css);
+@import url(./__form/authorisation__form.css);
+@import url(./__form-input/authorisation__form-input.css);
+@import url(./__form-submit/authorisation__form-submit.css);
+@import url(./__text/authorisation__text.css);
+
+.authorisation {
+  max-width: 358px;
+  margin: 60px auto 0;
+}

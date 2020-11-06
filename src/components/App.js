@@ -7,8 +7,10 @@ import ImagePopup from './ImagePopup';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
+import Login from './Login';
 import api from '../utils/api'; // Подключение к апи
 import { CurrentUserContext } from '../contexts/currentUserContext'; // Контекст текущего юзера
+import {} from 'react-router';
 
 class App extends React.Component {
   constructor(props) {
@@ -22,6 +24,8 @@ class App extends React.Component {
       selectedCard: '',
       currentUser: '',
       cards: [],
+      // FIXME: Для разработки
+      userIsAuthorised: false,
     };
   }
 
@@ -70,8 +74,6 @@ class App extends React.Component {
   handleCardLike = (card) => {
     // Проверяем, лайкнута ли карточка
     const isLiked = card.likes.some((like) => like._id === this.context._id);
-
-    // Давать готовые куски кода в проектной работе - такое себе, напишу эту часть сам
     // Если карта "лайкнута", передаем в апи "не нужен лайк" чтобы снять лайк при клике
     // Метод вернёт карточку места с обновленным числом лайков (объект, элемент массива)
     api.changeCardLike(card._id, !isLiked).then((updatedCard) => {
@@ -143,7 +145,11 @@ class App extends React.Component {
     return (
       <CurrentUserContext.Provider value={this.state.currentUser}>
         <Header/>
-        <Main onEditProfile={this.handleEditProfileClick} onAddPlace={this.handleAddPlaceClick} onEditAvatar={this.handleEditAvatarClick} onCardClick={this.handleCardClick} cards={this.state.cards} onCardLike={this.handleCardLike} onCardDelete={this.handleCardDelete}/>
+        <Switch>
+
+        </Switch>
+        {!this.state.userIsAuthorised && <Login />}
+        {this.state.userIsAuthorised && <Main onEditProfile={this.handleEditProfileClick} onAddPlace={this.handleAddPlaceClick} onEditAvatar={this.handleEditAvatarClick} onCardClick={this.handleCardClick} cards={this.state.cards} onCardLike={this.handleCardLike} onCardDelete={this.handleCardDelete}/>}
         <Footer/>
 
         <EditProfilePopup isOpen={this.state.isEditProfilePopupOpen} onClose={this.closeAllPopups} onUpdateUser={this.handleUpdateUser} />
