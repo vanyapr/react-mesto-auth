@@ -1,5 +1,9 @@
 {
-  "extends": "airbnb-base",
+  "extends": [
+    "airbnb-base",
+    "plugin:react/recommended"
+  ],
+  "parser": "babel-eslint",
   "rules": {
     "indent": ["error", 2], // Прописали отступы в проекте для линтера, чтобы не ругался
     "object-curly-newline": "off", // Отключили требование объявлять объекты в несколько строк (деструктуризация)
@@ -10,6 +14,8 @@
     ],
     "import/newline-after-import": "off", // Отключили ругань на импорт модулей сразу на следующей строке
     "no-console": "off", // Нам нужен  console.log в проекте
-    "no-useless-escape": "off" // Отключить ругань на экранирование символов в регулярных выражениях (\.)
+    "no-useless-escape": "off", // Отключить ругань на экранирование символов в регулярных выражениях (\.)
+    "class-methods-use-this": ["error", { "exceptMethods": ["render"] }], // Отключили ругань с требованием объявлять методы класса как this.method.bind(this)
+    "max-len": ["error", { "code": 300 }] // Отключили максимальную длину строк, потому что в темплейтах реакта строки по 130 символов в длину
   }
 }

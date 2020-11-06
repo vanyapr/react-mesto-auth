@@ -1,14 +1,14 @@
 import React from 'react';
-import Header from './Header'
+import Header from './Header';
 import Footer from './Footer';
-import Main from './Main'
+import Main from './Main';
 import PopupWithForm from './PopupWithForm';
 import ImagePopup from './ImagePopup';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
-import api from '../utils/api.js'; //Подключение к апи
-import { CurrentUserContext } from '../contexts/currentUserContext'; //Контекст текущего юзера
+import api from '../utils/api'; // Подключение к апи
+import { CurrentUserContext } from '../contexts/currentUserContext'; // Контекст текущего юзера
 
 class App extends React.Component {
   constructor(props) {
@@ -21,119 +21,122 @@ class App extends React.Component {
       confirmDeletePopupOpen: false,
       selectedCard: '',
       currentUser: '',
-      cards: []
-    }
+      cards: [],
+    };
   }
 
   handleEditAvatarClick = () => {
-    this.setState({isEditAvatarPopupOpen: true});
+    this.setState({ isEditAvatarPopupOpen: true });
   }
 
   handleEditProfileClick = () => {
-    this.setState({isEditProfilePopupOpen: true});
+    this.setState({ isEditProfilePopupOpen: true });
   }
 
   handleAddPlaceClick = () => {
-    this.setState({isAddPlacePopupOpen: true});
+    this.setState({ isAddPlacePopupOpen: true });
   }
 
   handleCardClick = (card) => {
-    this.setState({selectedCard: card});
+    this.setState({ selectedCard: card });
   }
 
   closeAllPopups = () => {
-    this.setState( {
+    this.setState({
       isEditAvatarPopupOpen: false,
       isEditProfilePopupOpen: false,
       isAddPlacePopupOpen: false,
       confirmDeletePopupOpen: false,
-      selectedCard: ''
+      selectedCard: '',
     });
   }
 
   handleUpdateUser = (newUserData) => {
-    api.saveUserInfo(newUserData).then(responceData => {
-      this.setState({currentUser: responceData});
+    api.saveUserInfo(newUserData).then((responseData) => {
+      this.setState({ currentUser: responseData });
       this.closeAllPopups();
-    }).catch(error => console.log(error))
+    }).catch((error) => console.log(error));
   }
 
   handleUpdateAvatar = (newAvatarData) => {
-    //Обновить аватар
-    api.changeAvatar(newAvatarData).then(responceData => {
-      //Обновить контекст
-      this.setState({currentUser: responceData});
+    // Обновить аватар
+    api.changeAvatar(newAvatarData).then((responseData) => {
+      // Обновить контекст
+      this.setState({ currentUser: responseData });
       this.closeAllPopups();
-    }).catch(error => console.log(error))
+    }).catch((error) => console.log(error));
   }
 
   handleCardLike = (card) => {
-    //Проверяем, лайкнута ли карточка
-    const isLiked = card.likes.some(like => like._id === this.context._id);
+    // Проверяем, лайкнута ли карточка
+    const isLiked = card.likes.some((like) => like._id === this.context._id);
 
     // Давать готовые куски кода в проектной работе - такое себе, напишу эту часть сам
     // Если карта "лайкнута", передаем в апи "не нужен лайк" чтобы снять лайк при клике
     // Метод вернёт карточку места с обновленным числом лайков (объект, элемент массива)
-    api.changeCardLike(card._id, !isLiked).then(updatedCard => {
-      //Обновить число лайков на карточках (внести изменение в стейт списка карточек)
-      const newCardsState = this.state.cards.map(item => {
-        //Находим в массиве карточку с нужным   ._id
+    api.changeCardLike(card._id, !isLiked).then((updatedCard) => {
+      // Обновить число лайков на карточках (внести изменение в стейт списка карточек)
+      const newCardsState = this.state.cards.map((item) => {
+        // Находим в массиве карточку с нужным   ._id
         if (item._id === updatedCard._id) {
-          return updatedCard; //Возвращаем вместо неё новую карточку, полученную в ответе апи
-        } else {
-          return item;
+          return updatedCard; // Возвращаем вместо неё новую карточку, полученную в ответе апи
         }
-      })
+        return item;
+      });
 
-      this.setState({cards: newCardsState}); //Обновили состояние карточек
-    }).then().catch(error => console.log(error));
+      this.setState({ cards: newCardsState }); // Обновили состояние карточек
+    }).then().catch((error) => console.log(error));
   }
 
   handleCardDelete = (card) => {
-    //Нам надо удалять карточку только после подтверждения
-    //0) Создать переменную с карточкой, которую мы будем удалять
-    this.cardToDelete  = card;
-    //1) Открыть попап подтверждения удаления передав в него пропсом
-    this.setState({confirmDeletePopupOpen: true});
-    //2) Если юзер подтвердил удаление, удалить карточку
-    //2) Если юзер не подтвердил удаление, ничего не делать
+    // Нам надо удалять карточку только после подтверждения
+    // 0) Создать переменную с карточкой, которую мы будем удалять
+    this.cardToDelete = card;
+    // 1) Открыть попап подтверждения удаления передав в него пропсом
+    this.setState({ confirmDeletePopupOpen: true });
+    // 2) Если юзер подтвердил удаление, удалить карточку
+    // 2) Если юзер не подтвердил удаление, ничего не делать
   }
 
   cardDelete = (event) => {
     event.preventDefault();
-    //Передаём переменную в компоненте при помощи переменной класса
-    let card = this.cardToDelete;
-    api.deleteCard(card._id).then(responce => {
-        //После удаления в апи надо удалить карточку из списка карточек
-        const reducedCards = this.state.cards.filter(item => item._id !== card._id);//В массиве оставляем только карточки, у которых id не совпадают с удаляемой карточкой
-        this.setState({cards: reducedCards});
+    // Передаём переменную в компоненте при помощи переменной класса
+    const card = this.cardToDelete;
+    api.deleteCard(card._id).then((response) => {
+      // Если был получен ответ от сервера, и он не null
+      if (response) {
+        // После удаления в апи надо удалить карточку из списка карточек
+        // В массиве оставляем только карточки, у которых id не совпадают с удаляемой карточкой
+        const reducedCards = this.state.cards.filter((item) => item._id !== card._id);
+        this.setState({ cards: reducedCards });
         this.cardToDelete.current = {};
-      }).catch(error => {
+      }
+    }).catch((error) => {
       console.log(error);
-    })
-    //Закрыть все попапы
+    });
+    // Закрыть все попапы
     this.closeAllPopups();
   }
 
   handleAddPlaceSubmit = (newCardObject) => {
-    api.addCard(newCardObject).then(responceData => {
-      this.setState({cards: [responceData, ...this.state.cards] });
+    api.addCard(newCardObject).then((responseData) => {
+      this.setState({ cards: [responseData, ...this.state.cards] });
       this.closeAllPopups();
-    }).catch(error => console.log(error));
+    }).catch((error) => console.log(error));
   }
 
   componentDidMount() {
-    api.getUserInfo().then(data => {
+    api.getUserInfo().then((data) => {
       this.setState({
-        currentUser: data
+        currentUser: data,
       });
-    }).catch(error => console.log(error));
+    }).catch((error) => console.log(error));
 
-    api.getCardsList().then(data => {
+    api.getCardsList().then((data) => {
       this.setState({
-        cards: data
+        cards: data,
       });
-    }).catch(error => console.log(error));
+    }).catch((error) => console.log(error));
   }
 
   render() {
@@ -151,8 +154,6 @@ class App extends React.Component {
       </CurrentUserContext.Provider>
     );
   }
-
-
 }
 
 export default App;
