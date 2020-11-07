@@ -39,6 +39,22 @@ class App extends React.Component {
     });
   }
 
+  openErrorTooltip = () => {
+    this.setState({
+      isTooltipPopupOpen: true,
+      tooltipStatus: 'error',
+      tooltipText: 'Что-то пошло не так! Попробуйте ещё раз.',
+    });
+  }
+
+  openSuccessTooltip = () => {
+    this.setState({
+      isTooltipPopupOpen: true,
+      tooltipStatus: 'success',
+      tooltipText: 'Вы успешно зарегистрировались!',
+    });
+  }
+
   handleEditAvatarClick = () => {
     this.setState({ isEditAvatarPopupOpen: true });
   }
@@ -159,7 +175,7 @@ class App extends React.Component {
 
         <Switch>
           <Route path='/sign-up'>
-            <Register handleLogin={this.handleLogin} />
+            <Register error={this.openErrorTooltip} success={this.openSuccessTooltip} handleLogin={this.handleLogin} />
           </Route>
 
           <Route path='/sign-in'>
@@ -188,7 +204,7 @@ class App extends React.Component {
           </Route>
         </Switch>
 
-        <InfoTooltip isLogined={this.state.isUserLogined} isOpen={this.state.isTooltipPopupOpen} onClose={this.closeAllPopups} />
+        <InfoTooltip tooltipStatus={this.state.tooltipStatus} tooltipText={this.state.tooltipText} isOpen={this.state.isTooltipPopupOpen} onClose={this.closeAllPopups} />
       </CurrentUserContext.Provider>
     );
   }

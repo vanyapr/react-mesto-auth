@@ -7,8 +7,8 @@ class InfoTooltip extends React.Component {
         <div className="popup__container">
           <button className="popup__close" onClick={this.props.onClose}>Закрыть уведомление</button>
           <div className="tooltip">
-            <div className={`tooltip__icon tooltip__icon_type_${this.props.isLogined ? 'success' : 'error'}`}>{this.props.isLogined ? 'Успех' : 'Провал'}</div>
-            <h2 className='tooltip__title'>{this.props.isLogined ? 'Вы успешно зарегистрировались!' : 'Что-то пошло не так! Попробуйте ещё раз.'}</h2>
+            <div className={`tooltip__icon tooltip__icon_type_${this.props.tooltipStatus}`}></div>
+            <h2 className='tooltip__title'>{this.props.tooltipText}</h2>
           </div>
         </div>
       </div>

@@ -10,18 +10,20 @@ const register = (email, password) => {
     },
     body: JSON.stringify({ password, email }),
   }).then((responce) => {
+    // Отлавливаем ошибку регистрации (ответ сервера)
+    if (!responce.ok) {
+      throw responce;
+    }
+
     if (responce.status === 201) {
       return responce.json();
-    } else {
-      console.log('Не удалось зарегистрировать пользователя');
-    }
-  }).then((json) => {
-    if (json) {
-      console.log(json.data);
-      return json.data;
+    } else if (responce.status === 400) {
+      console.log('Ошибка регистрации');
     }
   }).catch((error) => {
-    console.log(error);
+    error.text().then((errorMessage) => {
+      console.log(errorMessage);
+    });
   });
 };
 
@@ -35,11 +37,17 @@ const login = (email, password) => {
     },
     body: JSON.stringify({ password, email }),
   }).then((responce) => {
+    // Отлавливаем ошибку авторизации (ответ сервера)
+    if (!responce.ok) {
+      throw responce;
+    }
     if (responce.status === 200) {
       return responce.json();
     }
   }).catch((error) => {
-    console.log(error);
+    error.text().then((errorMessage) => {
+      console.log(errorMessage);
+    });
   });
 };
 
