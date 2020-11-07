@@ -20,10 +20,16 @@
     "arrow-body-style": "off", // Отключили требование обязательно возвращать значение для стрелочных функций (создаёт варнинги в react.memo)
     "react/no-children-prop": "off", // Ругань на дочерние элементы передающиеся в пропсах
     "react/prop-types": "off", // Ругань на отсутствие валидации пропсов в реакте
-    "react/display-name": "off", // ошибки eslint React.memo()
+    "react/display-name": "off", // Ошибки eslint React.memo()
+    "no-else-return": "off", // Ошибки в блоке если там есть else
+    "consistent-return": "off", // Обязательный возврат значений стрелочной функцией
+    "quote-props": "off" // Ошибки с кавычками при передаче заголовков запроса fetch
   },
   "plugins": [
     "eslint-plugin-no-memo-displayname", // Должен исправлять ошибки eslint React.memo(), но не работает?
     "eslint-plugin-react"
-  ]
+  ],
+  "env": {
+    "browser": true
+  }
 }

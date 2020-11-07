@@ -23,7 +23,7 @@ class App extends React.Component {
       isEditAvatarPopupOpen: false,
       isEditProfilePopupOpen: false,
       isAddPlacePopupOpen: false,
-      isTooltipPopupOpen: true,
+      isTooltipPopupOpen: false,
       confirmDeletePopupOpen: false,
       selectedCard: '',
       currentUser: '',
@@ -31,6 +31,12 @@ class App extends React.Component {
       // FIXME: Переменная для нужд разработки, авторизован ли юзер
       isUserLogined: false,
     };
+  }
+
+  handleLogin = () => {
+    this.setState({
+      isUserLogined: true,
+    });
   }
 
   handleEditAvatarClick = () => {
@@ -153,13 +159,12 @@ class App extends React.Component {
 
         <Switch>
           <Route path='/sign-up'>
-            <Register isLogined={this.state.isUserLogined} />
+            <Register handleLogin={this.handleLogin} />
           </Route>
 
           <Route path='/sign-in'>
-            <Login isLogined={this.state.isUserLogined} />
+            <Login handleLogin={this.handleLogin} />
           </Route>
-
 
           <Route exact path='/'>
             <ProtectedRoute
@@ -182,8 +187,8 @@ class App extends React.Component {
             <ImagePopup onClose={this.closeAllPopups} card={this.state.selectedCard}/>
           </Route>
         </Switch>
-        <InfoTooltip isLogined={this.state.isUserLogined} isOpen={this.state.isTooltipPopupOpen} onClose={this.closeAllPopups} />
 
+        <InfoTooltip isLogined={this.state.isUserLogined} isOpen={this.state.isTooltipPopupOpen} onClose={this.closeAllPopups} />
       </CurrentUserContext.Provider>
     );
   }
