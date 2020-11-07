@@ -1,32 +1,32 @@
-import React, {useEffect} from 'react';
-import PopupWithForm from "./PopupWithForm";
+import React, { useEffect } from 'react';
+import PopupWithForm from './PopupWithForm';
 
 const AddPlacePopup = React.memo((props) => {
   const [formValues, changeFormValues] = React.useState({
     name: '',
-    link: ''
+    link: '',
   });
 
-  function handleSubmit (event) {
+  function handleSubmit(event) {
     event.preventDefault();
     props.onAddPlace(formValues);
-    //Сбрасываем значения после сабмита
-    changeFormValues({name: '', link: ''});
+    // Сбрасываем значения после сабмита
+    changeFormValues({ name: '', link: '' });
   }
 
-  //Для валидации нам нужно для каждого инпута вызвать валидацию и отрендерить ошибку в контейнер ошибки возле этого инпута
-  function handleFormChange (event)  {
-    const {name, value} = event.target;
-    changeFormValues({...formValues, [name]: value});
+  // Для валидации нам нужно для каждого инпута вызвать валидацию и отрендерить ошибку в контейнер ошибки возле этого инпута
+  function handleFormChange(event) {
+    const { name, value } = event.target;
+    changeFormValues({ ...formValues, [name]: value });
   }
 
   const [formValidity, setFormValidity] = React.useState({
     nameIsValid: false,
-    linkIsValid: false
+    linkIsValid: false,
   });
 
   useEffect(() => {
-    const {name, link} = formValues;
+    const { name, link } = formValues;
     // 1) Проверить значение инпута
     const isNameFilled = name.length > 2;
     const isNameValid = isNameFilled;
@@ -34,14 +34,13 @@ const AddPlacePopup = React.memo((props) => {
     const isLinkFilled = link.length > 10;
     const isLinkValid = isLinkFilled;
 
-    setFormValidity(oldState => ({
+    setFormValidity((oldState) => ({
       nameIsValid: isNameValid,
       linkIsValid: isLinkValid,
     }));
+  }, [formValues, setFormValidity]);
 
-  }, [formValues, setFormValidity])
-
-  const {nameIsValid, linkIsValid} = formValidity;
+  const { nameIsValid, linkIsValid } = formValidity;
   const isSubmitDisabled = !(nameIsValid && linkIsValid);
 
   return (
@@ -52,12 +51,12 @@ const AddPlacePopup = React.memo((props) => {
           {!nameIsValid && <span className="form__error form__error_active" id="place-name-error">Введите название места</span>}
         </div>
         <div className="form__input-container">
-          <input onChange={handleFormChange} value={formValues.link} type="url" name="link" className="form__input" id="place-image"  placeholder="Ссылка на картинку" aria-label="Ссылка на картинку" required/>
+          <input onChange={handleFormChange} value={formValues.link} type="url" name="link" className="form__input" id="place-image" placeholder="Ссылка на картинку" aria-label="Ссылка на картинку" required/>
           {!linkIsValid && <span className="form__error form__error_active" id="place-image-error">Введите корректный url изображения</span>}
         </div>
       </>
     }/>
-  )
+  );
 });
 
 export default AddPlacePopup;

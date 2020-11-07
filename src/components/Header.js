@@ -8,16 +8,25 @@ const Header = React.memo((props) => {
       <Link to="/" title="Место" className="logo">
         <img src={logoPath} alt="Место" className="logo__image"/>
       </Link>
-      { !props.isLogined &&
-        <Switch>
-          <Route exact path='/sign-up'>
-            <Link to='/sign-in' title='Авторизоваться' className='header__link link'>Войти</Link>
-          </Route>
-          <Route exact path='/sign-in'>
-            <Link to='/sign-up' title='Зарегистрироваться' className='header__link link'>Регистрация</Link>
-          </Route>
-        </Switch>
-      }
+
+      <nav className='header__navigation'>
+        <ul className='header__navigation-list'>
+          <Switch>
+            <Route exact path='/sign-up'>
+              <li className='header__navigation-item'><Link to='/sign-in' title='Авторизоваться' className='header__link'>Войти</Link></li>
+            </Route>
+            <Route exact path='/sign-in'>
+              <li className='header__navigation-item'><Link to='/sign-up' title='Зарегистрироваться' className='header__link'>Регистрация</Link></li>
+            </Route>
+            <Route exact path='/'>
+              <li className='header__navigation-item'>{props.userEmail}</li>
+              <li className='header__navigation-item'>
+                <button onClick={props.logout} title='Выйти' className='header__link header__link_type_logout'>Выйти</button>
+              </li>
+            </Route>
+          </Switch>
+        </ul>
+      </nav>
     </header>
   );
 });

@@ -48,6 +48,19 @@ class App extends React.Component {
     localStorage.setItem('jwt', token);
   }
 
+  handleLogout = () => {
+    console.log('Произвели локаут');
+    // Удалили токен
+    localStorage.removeItem('jwt');
+
+    // Сменили состояние юзера на "не авторизован"
+    this.setState({
+      isUserLogined: false,
+    });
+
+    this.props.history.push('/sign-in');
+  }
+
   openErrorTooltip = () => {
     this.setState({
       isTooltipPopupOpen: true,
@@ -173,12 +186,21 @@ class App extends React.Component {
           // Если токен валиден, авторизовать юзера
           this.setState({
             isUserLogined: true,
+            userEmailAddress: json.data.email,
           });
           this.props.history.push('/');
+        } else {
+          this.setState({
+            isUserLogined: false,
+          });
         }
       });
     } else {
       // Если юзер невалиден, переадресовать юзера на экран авторизации. Лишним не будет.
+      this.setState({
+        isUserLogined: false,
+      });
+      this.props.history.push('/sign-in');
     }
   }
 
@@ -201,7 +223,7 @@ class App extends React.Component {
   render() {
     return (
       <CurrentUserContext.Provider value={this.state.currentUser}>
-        <Header isLogined={this.state.isUserLogined}/>
+        <Header userEmail={this.state.userEmailAddress} isLogined={this.state.isUserLogined} logout={this.handleLogout}/>
 
         <Switch>
           <Route path='/sign-up'>

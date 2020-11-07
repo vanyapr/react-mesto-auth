@@ -77,5 +77,5 @@ const checkToken = (token) => {
 export default {
   register,
   login,
-  checkToken
+  checkToken,
 };

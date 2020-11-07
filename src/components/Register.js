@@ -43,7 +43,7 @@ class Register extends React.Component {
           <input onChange={this.handleChange} type="password" name="password" className="authorisation__form-input" id="Password" minLength="3" maxLength="40" aria-label="Пароль" placeholder="Пароль" required />
           <button type="submit" className="authorisation__form-submit">Зарегистрироваться</button>
         </form>
-        <p className='authorisation__text'>Уже зарегистрированы? <Link className='authorisation__form-link link' to="/sign-in" title="">Войти</Link></p>
+        <p className='authorisation__text'>Уже зарегистрированы? <Link className='authorisation__link' to="/sign-in" title="">Войти</Link></p>
       </main>
     );
   }

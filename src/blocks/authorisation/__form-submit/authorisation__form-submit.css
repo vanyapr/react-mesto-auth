@@ -20,3 +20,9 @@
 .authorisation__form-submit:hover {
   opacity: .85;
 }
+
+@media screen and (max-width: 425px){
+  .authorisation__form-submit {
+    margin-top: 173px;
+  }
+}

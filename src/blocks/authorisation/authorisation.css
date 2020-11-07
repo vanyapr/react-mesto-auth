@@ -11,6 +11,7 @@
 @import url(./__form-input/authorisation__form-input.css);
 @import url(./__form-submit/authorisation__form-submit.css);
 @import url(./__text/authorisation__text.css);
+@import url(./__link/authorisation__link.css);
 
 .authorisation {
   max-width: 358px;

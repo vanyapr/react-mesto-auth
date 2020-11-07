@@ -6,7 +6,7 @@ const Footer = React.memo(() => {
   return (
     <footer className="footer">
       <p className="footer__copyright">
-        &copy; {currentYear === 2020 ? '2020' : '2020 - ' + currentYear} Mesto Russia
+        &copy; {currentYear === 2020 ? '2020' : `2020 - ${currentYear}`} Mesto Russia
       </p>
     </footer>
   );

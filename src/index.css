@@ -5,6 +5,7 @@
 /*Blocks*/
 @import url(./blocks/root/root.css);
 @import url(./blocks/header/header.css);
+@import url(./blocks/header/__link/_type/header__link_type_logout.css);
 @import url(./blocks/logo/logo.css);
 @import url(./blocks/profile/profile.css);
 @import url(./blocks/places/places.css);
@@ -14,7 +15,6 @@
 @import url(./blocks/popup/_type/popup_type_image.css);
 @import url(./blocks/popup/_opened/popup_opened.css);
 @import url(./blocks/authorisation/authorisation.css);
-@import url(./blocks/link/link.css);
 @import url(./blocks/tooltip/tooltip.css);
 
 @import url(./blocks/footer/footer.css);
