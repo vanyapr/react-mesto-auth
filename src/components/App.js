@@ -34,10 +34,11 @@ class App extends React.Component {
     };
   }
 
-  handleLogin = (token) => {
+  handleLogin = (token, email) => {
     // Сменили состояние юзера на "авторизован"
     this.setState({
       isUserLogined: true,
+      userEmailAddress: email,
     });
 
     // Сохранили токен в локальное хранилище браузера
