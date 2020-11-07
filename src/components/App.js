@@ -1,5 +1,5 @@
 import React from 'react'; // Реакт
-import { Route, Redirect, Switch, withRouter } from 'react-router-dom'; // Компоненты для роутинга и редиректа
+import { Route, Switch, withRouter } from 'react-router-dom'; // Компоненты для роутинга и редиректа
 import ProtectedRoute from './ProtectedRoute'; // HOC компонент для защиты роута
 import Header from './Header'; // Шапка
 import Footer from './Footer'; // Подвал
@@ -14,6 +14,7 @@ import AddPlacePopup from './AddPlacePopup'; // Попап добавления 
 import InfoTooltip from './InfoTooltip'; // Попап добавления места
 import api from '../utils/api'; // Подключение к апи для получения данных
 import { CurrentUserContext } from '../contexts/currentUserContext'; // Контекст текущего юзера
+import auth from '../utils/auth';
 
 class App extends React.Component {
   constructor(props) {
@@ -33,10 +34,18 @@ class App extends React.Component {
     };
   }
 
-  handleLogin = () => {
+  handleLogin = (token) => {
+    // Сменили состояние юзера на "авторизован"
     this.setState({
       isUserLogined: true,
     });
+
+    // Сохранили токен в локальное хранилище браузера
+    this.saveTokenToLocalStorage(token);
+  }
+
+  saveTokenToLocalStorage = (token) => {
+    localStorage.setItem('jwt', token);
   }
 
   openErrorTooltip = () => {
@@ -154,7 +163,28 @@ class App extends React.Component {
     }).catch((error) => console.log(error));
   }
 
+  checkUserToken = () => {
+    if (localStorage.getItem('jwt')) {
+      const token = localStorage.getItem('jwt');
+      console.log(token);
+      // Проверить валидность токена
+      auth.checkToken(token).then((json) => {
+        if (json) {
+          // Если токен валиден, авторизовать юзера
+          this.setState({
+            isUserLogined: true,
+          });
+          this.props.history.push('/');
+        }
+      });
+    } else {
+      // Если юзер невалиден, переадресовать юзера на экран авторизации. Лишним не будет.
+    }
+  }
+
   componentDidMount() {
+    this.checkUserToken();
+
     api.getUserInfo().then((data) => {
       this.setState({
         currentUser: data,
@@ -179,7 +209,7 @@ class App extends React.Component {
           </Route>
 
           <Route path='/sign-in'>
-            <Login handleLogin={this.handleLogin} />
+            <Login error={this.openErrorTooltip} handleLogin={this.handleLogin} />
           </Route>
 
           <Route exact path='/'>
@@ -210,4 +240,4 @@ class App extends React.Component {
   }
 }
 
-export default App;
+export default withRouter(App);

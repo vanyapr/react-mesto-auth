@@ -18,7 +18,7 @@ const register = (email, password) => {
     if (responce.status === 201) {
       return responce.json();
     } else if (responce.status === 400) {
-      console.log('Ошибка регистрации');
+      console.log('Некорректно заполнено одно из полей');
     }
   }).catch((error) => {
     error.text().then((errorMessage) => {
@@ -43,6 +43,10 @@ const login = (email, password) => {
     }
     if (responce.status === 200) {
       return responce.json();
+    } else if (responce.status === 400) {
+      console.log('Не передано одно из полей');
+    } else if (responce.status === 401) {
+      console.log('Пользователь с таким email  не найден');
     }
   }).catch((error) => {
     error.text().then((errorMessage) => {
@@ -51,7 +55,27 @@ const login = (email, password) => {
   });
 };
 
+const checkToken = (token) => {
+  return fetch(`${authUrl}/users/me`, {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    },
+  }).then((responce) => {
+    if (responce.status === 200) {
+      return responce.json();
+    } else if (responce.status === 401) {
+      console.log('Токен недействителен');
+    }
+  }).catch((error) => {
+    console.log(error);
+  });
+};
+
 export default {
   register,
   login,
+  checkToken
 };
