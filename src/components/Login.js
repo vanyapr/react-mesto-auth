@@ -19,7 +19,7 @@ class Login extends React.Component {
       // Если в ответе вернулся корректный json, значит авторизация удалась
       if (json) {
         // Авторизовали юзера и передали токен во внешнюю функцию
-        this.props.handleLogin(json.token, this.state.email);
+        this.props.onLogin(json.token, this.state.email);
         this.props.history.push('/'); // Отправили пользователя на главную страницу как авторизованного
       } else {
         this.props.error();

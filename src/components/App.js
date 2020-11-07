@@ -224,7 +224,7 @@ class App extends React.Component {
   render() {
     return (
       <CurrentUserContext.Provider value={this.state.currentUser}>
-        <Header userEmail={this.state.userEmailAddress} isLogined={this.state.isUserLogined} logout={this.handleLogout}/>
+        <Header userEmail={this.state.userEmailAddress} isLogined={this.state.isUserLogined} onSignOut={this.handleLogout}/>
 
         <Switch>
           <Route path='/sign-up'>
@@ -232,7 +232,7 @@ class App extends React.Component {
           </Route>
 
           <Route path='/sign-in'>
-            <Login error={this.openErrorTooltip} handleLogin={this.handleLogin} />
+            <Login error={this.openErrorTooltip} onLogin={this.handleLogin} />
           </Route>
 
           <Route exact path='/'>

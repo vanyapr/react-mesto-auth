@@ -21,7 +21,7 @@ const Header = React.memo((props) => {
             <Route exact path='/'>
               <li className='header__navigation-item'>{props.userEmail}</li>
               <li className='header__navigation-item'>
-                <button onClick={props.logout} title='Выйти' className='header__link header__link_type_logout'>Выйти</button>
+                <button onClick={props.onSignOut} title='Выйти' className='header__link header__link_type_logout'>Выйти</button>
               </li>
             </Route>
           </Switch>
