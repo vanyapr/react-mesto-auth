@@ -39,10 +39,10 @@ class App extends React.Component {
     this.setState({
       isUserLogined: true,
       userEmailAddress: email,
+    }, () => {
+      // Сохранили токен в локальное хранилище браузера
+      this.saveTokenToLocalStorage(token);
     });
-
-    // Сохранили токен в локальное хранилище браузера
-    this.saveTokenToLocalStorage(token);
   }
 
   saveTokenToLocalStorage = (token) => {
@@ -57,9 +57,9 @@ class App extends React.Component {
     // Сменили состояние юзера на "не авторизован"
     this.setState({
       isUserLogined: false,
+    }, () => {
+      this.props.history.push('/sign-in');
     });
-
-    this.props.history.push('/sign-in');
   }
 
   openErrorTooltip = () => {
@@ -188,8 +188,9 @@ class App extends React.Component {
           this.setState({
             isUserLogined: true,
             userEmailAddress: json.data.email,
+          }, () => {
+            this.props.history.push('/');
           });
-          this.props.history.push('/');
         } else {
           this.setState({
             isUserLogined: false,

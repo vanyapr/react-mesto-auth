@@ -5,7 +5,7 @@
 /*Blocks*/
 @import url(./blocks/root/root.css);
 @import url(./blocks/header/header.css);
-@import url(./blocks/header/__link/_type/header__link_type_logout.css);
+@import url(./blocks/header/_state/header_state_navigation-opened.css);
 @import url(./blocks/logo/logo.css);
 @import url(./blocks/profile/profile.css);
 @import url(./blocks/places/places.css);
