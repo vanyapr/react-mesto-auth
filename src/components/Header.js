@@ -18,6 +18,7 @@ const Header = React.memo((props) => {
     toggleNavigation({
       opened: false,
     });
+
     // Разавторизуем пользователя
     props.onSignOut();
   };

@@ -50,7 +50,6 @@ class App extends React.Component {
   }
 
   handleLogout = () => {
-    console.log('Произвели локаут');
     // Удалили токен
     localStorage.removeItem('jwt');
 
@@ -180,7 +179,6 @@ class App extends React.Component {
   checkUserToken = () => {
     if (localStorage.getItem('jwt')) {
       const token = localStorage.getItem('jwt');
-      console.log(token);
       // Проверить валидность токена
       auth.checkToken(token).then((json) => {
         if (json) {
