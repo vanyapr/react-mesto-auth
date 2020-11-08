@@ -13,6 +13,15 @@ const Header = React.memo((props) => {
     });
   };
 
+  const signOut = () => {
+    // Закрываем навигацию
+    toggleNavigation({
+      opened: false,
+    });
+    // Разавторизуем пользователя
+    props.onSignOut();
+  };
+
   return (
     <header className={`header ${navigationState.opened ? 'header_state_navigation-opened' : ''}`}>
       <Link to="/" title="Место" className="logo">
@@ -26,17 +35,17 @@ const Header = React.memo((props) => {
           <Link to='/sign-up' title='Зарегистрироваться' className='header__link'>Регистрация</Link>
         </Route>
         <Route exact path='/'>
-          <nav className={`header__navigation header__navigation_state_${navigationState.opened ? 'opened' : 'closed'}`}>
+          <nav className='header__navigation'>
             <ul className='header__navigation-list'>
               <li className='header__navigation-item'>{props.userEmail}</li>
               <li className='header__navigation-item'>
-                <button onClick={props.onSignOut} title='Выйти' className='header__link_type_logout'>Выйти</button>
+                <button onClick={signOut} title='Выйти' className='header__link_type_logout'>Выйти</button>
               </li>
             </ul>
           </nav>
+          <button onClick={switchNavigation} className={`header__navigation-switch header__navigation-switch_state_${navigationState.opened ? 'on' : 'off'}`}>Навигация</button>
         </Route>
       </Switch>
-      <button onClick={switchNavigation} className={`header__navigation-switch header__navigation-switch_state_${navigationState.opened ? 'on' : 'off'}`}>Навигация</button>
     </header>
   );
 });

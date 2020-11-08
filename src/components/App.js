@@ -225,7 +225,7 @@ class App extends React.Component {
   render() {
     return (
       <CurrentUserContext.Provider value={this.state.currentUser}>
-        <Header userEmail={this.state.userEmailAddress} isLogined={this.state.isUserLogined} onSignOut={this.handleLogout}/>
+        <Header userEmail={this.state.userEmailAddress} onSignOut={this.handleLogout}/>
 
         <Switch>
           <Route path='/sign-up'>

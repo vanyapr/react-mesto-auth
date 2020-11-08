@@ -1,8 +1,0 @@
-@media screen and (max-width: 425px) {
-  .header__navigation_state_closed {
-    /* Для нужд анимации продублируем этот код */
-    display: block;
-    margin-top: -143px;
-    background-color: #000;
-  }
-}

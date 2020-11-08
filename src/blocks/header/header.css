@@ -1,6 +1,4 @@
 @import url(./__navigation/header__navigation.css);
-@import url(./__navigation/_state/header__navigation_state_opened.css);
-@import url(./__navigation/_state/header__navigation_state_closed.css);
 @import url(./__navigation-list/header__navigation-list.css);
 @import url(./__navigation-item/header__navigation-item.css);
 @import url(./__link/header__link.css);
