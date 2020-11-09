@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import PopupWithForm from './PopupWithForm';
 
-const AddPlacePopup = React.memo((props) => {
+const AddPlacePopup = React.memo(({ isOpen, onClose, onAddPlace }) => {
   const [formValues, changeFormValues] = React.useState({
     name: '',
     link: '',
@@ -9,7 +9,7 @@ const AddPlacePopup = React.memo((props) => {
 
   function handleSubmit(event) {
     event.preventDefault();
-    props.onAddPlace(formValues);
+    onAddPlace(formValues);
     // Сбрасываем значения после сабмита
     changeFormValues({ name: '', link: '' });
   }
@@ -44,7 +44,7 @@ const AddPlacePopup = React.memo((props) => {
   const isSubmitDisabled = !(nameIsValid && linkIsValid);
 
   return (
-    <PopupWithForm title="Новое место" buttonText="Создать" name="place" isOpen={props.isOpen} onClose={props.onClose} onSubmit={handleSubmit} isSubmitDisabled={isSubmitDisabled} children={
+    <PopupWithForm title="Новое место" buttonText="Создать" name="place" isOpen={isOpen} onClose={onClose} onSubmit={handleSubmit} isSubmitDisabled={isSubmitDisabled} children={
       <>
         <div className="form__input-container">
           <input onChange={handleFormChange} value={formValues.name} type="text" name="name" className="form__input" id="place-name" minLength="1" maxLength="30" placeholder="Название" aria-label="Название места" required/>

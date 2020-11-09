@@ -1,14 +1,14 @@
 import React from 'react';
 
-const PopupWithForm = React.memo((props) => {
+const PopupWithForm = React.memo(({ name, isOpen, onClose, title, onSubmit, children, isSubmitDisabled, buttonText }) => {
   return (
-    <div className={`popup popup_type_${props.name} ${props.isOpen && 'popup_opened'}`}>
+    <div className={`popup popup_type_${name} ${isOpen && 'popup_opened'}`}>
       <div className="popup__container">
-        <button className="popup__close" onClick={props.onClose}>Закрыть форму</button>
-        <form className="form" name={props.name} onSubmit={props.onSubmit} noValidate>
-          <h2 className="form__title">{props.title}</h2>
-          {props.children}
-          <button type="submit" className={`form__submit ${props.isSubmitDisabled && 'form__submit_inactive'}`}>{props.buttonText}</button>
+        <button className="popup__close" onClick={onClose}>Закрыть форму</button>
+        <form className="form" name={name} onSubmit={onSubmit} noValidate>
+          <h2 className="form__title">{title}</h2>
+          {children}
+          <button type="submit" className={`form__submit ${isSubmitDisabled && 'form__submit_inactive'}`}>{buttonText}</button>
         </form>
       </div>
     </div>

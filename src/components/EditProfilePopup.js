@@ -2,11 +2,6 @@ import React from 'react';
 import PopupWithForm from './PopupWithForm';
 import { CurrentUserContext } from '../contexts/currentUserContext';
 
-// function validate () {
-//   //true  - error
-//   //false - correct
-// }
-
 const validators = {
   name: {
     required: (value) => {
@@ -26,7 +21,7 @@ const validators = {
   },
 };
 
-function EditProfilePopup(props) {
+function EditProfilePopup({ onUpdateUser, isOpen, onClose }) {
   const [formValues, changeFormValues] = React.useState({ name: '', about: '' });
 
   // Переменная для состояеия ошибок
@@ -50,7 +45,7 @@ function EditProfilePopup(props) {
 
   function handleSubmit(event) {
     event.preventDefault();
-    props.onUpdateUser(formValues);
+    onUpdateUser(formValues);
   }
 
   React.useEffect(() => {
@@ -85,7 +80,7 @@ function EditProfilePopup(props) {
   const isSubmitButtonDisabled = isAboutInvalid || isNameInvalid;
 
   return (
-    <PopupWithForm title="Редактировать профиль" buttonText="Сохранить" name="profile" isOpen={props.isOpen} onClose={props.onClose} onSubmit={handleSubmit} isSubmitDisabled={isSubmitButtonDisabled} children={
+    <PopupWithForm title="Редактировать профиль" buttonText="Сохранить" name="profile" isOpen={isOpen} onClose={onClose} onSubmit={handleSubmit} isSubmitDisabled={isSubmitButtonDisabled} children={
       <>
         <div className="form__input-container">
           <input onChange={handleFormChange} defaultValue={formValues.name} type="text" name="name" className="form__input" id="profile-name" minLength="2" maxLength="40" aria-label="Имя" required/>

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, Switch, Route } from 'react-router-dom';
 import logoPath from '../images/logo.svg';
 
-const Header = React.memo((props) => {
+const Header = React.memo(({ onSignOut, userEmail }) => {
   const [navigationState, toggleNavigation] = useState({
     opened: false,
   });
@@ -20,7 +20,7 @@ const Header = React.memo((props) => {
     });
 
     // Разавторизуем пользователя
-    props.onSignOut();
+    onSignOut();
   };
 
   return (
@@ -38,7 +38,7 @@ const Header = React.memo((props) => {
         <Route exact path='/'>
           <nav className='header__navigation'>
             <ul className='header__navigation-list'>
-              <li className='header__navigation-item'>{props.userEmail}</li>
+              <li className='header__navigation-item'>{userEmail}</li>
               <li className='header__navigation-item'>
                 <button onClick={signOut} title='Выйти' className='header__link_type_logout'>Выйти</button>
               </li>

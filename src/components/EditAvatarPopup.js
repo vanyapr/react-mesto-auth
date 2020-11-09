@@ -2,7 +2,7 @@ import React from 'react';
 import PopupWithForm from './PopupWithForm';
 import { CurrentUserContext } from '../contexts/currentUserContext';
 
-const EditAvatarPopup = React.memo((props) => {
+const EditAvatarPopup = React.memo(({ onUpdateAvatar, isOpen, onClose }) => {
   const currentUser = React.useContext(CurrentUserContext);
   const avatarRef = React.useRef(currentUser.avatar);
 
@@ -12,7 +12,7 @@ const EditAvatarPopup = React.memo((props) => {
 
   function handleSubmit(event) {
     event.preventDefault();
-    props.onUpdateAvatar({ avatar: avatarRef.current });
+    onUpdateAvatar({ avatar: avatarRef.current });
   }
 
   React.useEffect(() => {
@@ -20,7 +20,7 @@ const EditAvatarPopup = React.memo((props) => {
   }, [currentUser]);
 
   return (
-    <PopupWithForm title="Обновить аватар" buttonText="Сохранить" name="avatar" isOpen={props.isOpen} onClose={props.onClose} onSubmit={handleSubmit} children={
+    <PopupWithForm title="Обновить аватар" buttonText="Сохранить" name="avatar" isOpen={isOpen} onClose={onClose} onSubmit={handleSubmit} children={
       <>
         <div className="form__input-container">
           <input onChange={handleAvatarChange} type="url" name="avatar" className="form__input form__input_value_avatar" id="user-avatar" defaultValue={avatarRef.current} placeholder="Ссылка на аватар" aria-label="Ссылка на аватар" required/>
