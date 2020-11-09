@@ -122,7 +122,7 @@ class App extends React.Component {
 
   handleCardLike = (card) => {
     // Проверяем, лайкнута ли карточка
-    const isLiked = card.likes.some((like) => like._id === this.context._id);
+    const isLiked = card.likes.some((like) => like._id === this.state.currentUser._id);
     // Если карта "лайкнута", передаем в апи "не нужен лайк" чтобы снять лайк при клике
     // Метод вернёт карточку места с обновленным числом лайков (объект, элемент массива)
     api.changeCardLike(card._id, !isLiked).then((updatedCard) => {
@@ -192,6 +192,9 @@ class App extends React.Component {
         } else {
           this.setState({
             isUserLogined: false,
+          }, () => {
+            // Если токен просрочен или некорректен, удалили его
+            localStorage.removeItem('jwt');
           });
         }
       });
@@ -207,15 +210,13 @@ class App extends React.Component {
   componentDidMount() {
     this.checkUserToken();
 
-    api.getUserInfo().then((data) => {
+    // Использовал Promise.all по совету код-ревьюера, теперь стейт юзера и карточек обновляется
+    // в одном выражении вместо двух, упростил читаемость кода
+    Promise.all([api.getUserInfo(), api.getCardsList()]).then(([userInfo, cardsData]) => {
+      console.log(userInfo);
       this.setState({
-        currentUser: data,
-      });
-    }).catch((error) => console.log(error));
-
-    api.getCardsList().then((data) => {
-      this.setState({
-        cards: data,
+        currentUser: userInfo,
+        cards: cardsData,
       });
     }).catch((error) => console.log(error));
   }
@@ -250,7 +251,7 @@ class App extends React.Component {
             <ProtectedRoute path='/' component={Footer} isLogined={this.state.isUserLogined} />
             <EditProfilePopup isOpen={this.state.isEditProfilePopupOpen} onClose={this.closeAllPopups} onUpdateUser={this.handleUpdateUser} />
             <AddPlacePopup isOpen={this.state.isAddPlacePopupOpen} onClose={this.closeAllPopups} onAddPlace={this.handleAddPlaceSubmit} />
-            <PopupWithForm title="Вы уверены?" buttonText="Да" name="confirm" isOpen={this.state.confirmDeletePopupOpen} onSubmit={this.cardDelete} />
+            <PopupWithForm title="Вы уверены?" buttonText="Да" name="confirm" isOpen={this.state.confirmDeletePopupOpen} onSubmit={this.cardDelete} onClose={this.closeAllPopups} />
             <EditAvatarPopup onClose={this.closeAllPopups} isOpen={this.state.isEditAvatarPopupOpen} onUpdateAvatar={this.handleUpdateAvatar} />
             <ImagePopup onClose={this.closeAllPopups} card={this.state.selectedCard}/>
           </Route>
